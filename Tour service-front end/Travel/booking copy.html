@@ -1,0 +1,114 @@
+<script>
+    console.log("Loading Data from booking Get API");    
+
+    function Submit(){
+        var bid = document.getElementById('pro-id').value;
+        var bnumber = document.getElementById('pro-number').value;
+        var bstatus = document.getElementById('pro-status').value;
+        var tid = document.getElementById('pro-id').value;
+        var cid = document.getElementById('pro-id').value;
+        let data = {
+            bookingId: bid,
+            bookingNumber: bnumber,
+            bookingStatus: bstatus,
+            tourId: tid,
+            custId: cid,
+            
+
+       }
+
+
+       async function getbooking(){
+        const resp = await fetch('http://localhost:4002/booking/fetch');
+        var data = await resp.json();
+        console.log(data);
+        let tab = `<tr> 
+                   <th> ID </th>
+                   <th> Number </th>
+                   <th> Status</th>
+                   <th> TourId </th>
+                   <th> CustId </th>
+                   <th> ID </th>
+                   <th> Name </th>
+                   <th> Cost </th>
+                   <th> Days </th>
+                   <th> ID </th>
+                   <th> Name </th>
+                   <th> Email </th>
+                   <th> Phone </th>
+                   <th> State </th>
+                   <th> City </th>
+                   <th> Country </th>
+                   
+                   </tr>`;
+                   for( let p of data){
+                    tab += `<tr> 
+                            <td>${p.bookingId}</td>
+                            <td>${p.bookingNumber}</td>
+                            <td>${p.bookingStatus}</td>
+                            <td>${p.tourId}</td>
+                            <td>${p.custId}</td>
+                            <td>${p.tourId}</td>
+                            <td>${p.tourName}</td>
+                            <td>${p.tourCost}</td>
+                            <td>${p.tourDays}</td>
+                            <td>${p.custId}</td>
+                            <td>${p.custName}</td>
+                            <td>${p.custEmail}</td>
+                            <td>${p.custPhone} </td>
+                            <td>${p.custCity} </td>
+                            <td>${p.custState} </td>
+                            <td>${p.custCountry} </td>
+                                                      
+                        </tr>`
+                   }
+                   document.getElementById("booking-table").innerHTML = tab;
+
+                   alert("Bookings Listed Successfully !!! ")
+                }
+
+
+       
+
+        fetch('http://localhost:4002/booking/',{
+        method:"POST",
+        body: JSON.stringify(data),
+        headers : {
+            "Content-Type":"application/json",
+            "Access-Control-Allow-Origin":"*"
+        }
+       }).then(response => response.json())
+         .then(json => console.log(json));
+         
+         alert("Submitted Successfully !!! ")
+    }
+
+
+    
+</script>
+<body>
+
+    <div id="Submit">
+        <h2> Check your Booking Status: </h2>
+        bookingId: <input type="text" id="pro-id" /> <br /> <br />
+        bookingNumber: <input type="text" id="pro-number"/> <br /> <br />
+        bookingStatus: <input type="text" id="pro-status"/> <br /> <br />
+        tourId: <input type="text" id="pro-id"/> <br /> <br />
+        custId: <input type="text" id="pro-id"/> <br /> <br />
+        <button onclick="Submit()"> Submit</button>
+        <h2 id="back"><a href="./index.html"> Back </a>  </h2>
+    </div>
+
+
+    <div id="get-booking">  
+        <h2 id="back"> List Bookings: </h2>     
+        <button onclick="getbooking()"> List Bookings </button>
+        <table id="booking-table">        
+            
+        </table>
+
+    </div>
+
+
+</body>
+
